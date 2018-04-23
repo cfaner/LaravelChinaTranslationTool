@@ -11,6 +11,7 @@
       "js": [ "script/lib/jquery.min.js","script/content.js" ],
       "matches": [ "https://laravel-china.org/*" ]
    }],
+   "icons":{"16":"image/icon.png","48":"image/icon.png","128":"image/icon.png"},
    "description": "Laravel-China 翻译工具",
    "manifest_version": 2,
    "minimum_chrome_version": "17.0",
