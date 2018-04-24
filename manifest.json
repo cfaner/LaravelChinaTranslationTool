@@ -3,6 +3,7 @@
       "scripts": [ 
 			"script/lib/jquery.min.js",
 			"script/lib/md5.js",
+			"script/config.js",
 			"script/background.js" 
 		]
    },

@@ -1,5 +1,5 @@
-var appKey = '';
-var key = ''; 
+let appKey = APP_ID;
+let key = APP_SCRET; 
 
 chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {  
 	if (request.action == "get_net_translation_result")
@@ -25,8 +25,7 @@ chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
 				sign: sign
 			},
 			success: function (result) {
-				console.log(result);
-				console.log( sendResponse );
+				console.log( result );
 				sendResponse({result: result });  
 			} 
 		});
