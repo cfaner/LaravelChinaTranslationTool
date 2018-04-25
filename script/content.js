@@ -1,25 +1,3 @@
-let database = {
-	prefix : "lc_translation_",
-	getItem : function( key )
-	{
-		return localStorage.getItem( this.prefix + key.toLowerCase() );
-	},
-	getJSONItem : function( key )
-	{
-		let temp = localStorage.getItem( this.prefix + key.toLowerCase() );
-		if(!temp) return null;
-		return JSON.parse(temp) ;
-	},
-	setItem : function( key , value )
-	{
-		localStorage.setItem( this.prefix + key.toLowerCase() , value );
-	},
-	setJSONItem : function( key , value )
-	{
-		value = JSON.stringify( value );
-		localStorage.setItem( this.prefix + key.toLowerCase() , value );
-	}
-};
 
 let currentSelectionWord = '';
 
@@ -66,6 +44,17 @@ function inNewWordList(word)
 	return $.inArray( word , newWordDataList.word ) >= 0;
 }
 
+function isEnglishWord( word )
+{
+	let reg = /^[A-Za-z]+$/;
+	return reg.test( word )
+}
+
+function isNotEnglishWord( word )
+{
+	return !isEnglishWord( word );
+}
+
 function updateNewWord()
 {
 	$(".translation-item > p").each(function(i,obj){
@@ -87,10 +76,8 @@ function updateNewWord()
 
 updateNewWord();
 
-$(".translation-item > p").each(function(i,obj){
-	
-	let content = $(obj).text();
-	
+function splitContentToWords( content )
+{
 	content = content.replace("&nbsp;"," ");
 	
 	let c = content.split(" ");
@@ -99,6 +86,10 @@ $(".translation-item > p").each(function(i,obj){
 	{
 		words.push(w);
 	}
+}
+
+$(".translation-item > p").each(function(i,obj){
+	splitContentToWords( $(obj).text() );
 });
 
 document.addEventListener("dblclick", on_mouse_dbclick, true);
@@ -145,7 +136,10 @@ function getWordTranslationResult( word , callback )
 function on_mouse_dbclick(event) {
 	currentSelectionWord = $.trim( $.selection('text') ) ;
 	
-	if(!currentSelectionWord) return;
+	if( isNotEnglishWord( currentSelectionWord )) {
+		currentSelectionWord = '';
+		return;
+	}
 	
 	$("#translation-box").show();
 	$("#translation-box").css({

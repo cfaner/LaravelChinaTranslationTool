@@ -17,6 +17,7 @@
             "script/lib/jquery.min.js",
             "script/lib/jquery.selection.js",
             "script/lib/md5.js",
+            "script/database.js"
             "script/content.js"
         ],
       "matches": [ "https://laravel-china.org/*" ]
