@@ -106,12 +106,21 @@ document.addEventListener("dblclick", on_mouse_dbclick, true);
 function writeTranslantionResultToHtml(result)
 {
 	$("#translation-net-result").html("");
-	$( result.basic.explains ).each(function(i,obj){
-		$("#translation-net-result").append( obj + "<br />" );
-	});
-	$( result.translation ).each(function(i,obj){
-		$("#translation-net-result").append( obj + "<br />" );
-	});
+	
+	if(result.basic != undefined && result.basic.explains != undefined)
+	{
+		$( result.basic.explains ).each(function(i,obj){
+			$("#translation-net-result").append( obj + "<br />" );
+		});
+	}
+	
+	if( result.translation != undefined)
+	{
+		$( result.translation ).each(function(i,obj){
+			$("#translation-net-result").append( obj + "<br />" );
+		});
+	}
+	
 }
 
 function getWordTranslationResult( word , callback )
@@ -135,6 +144,9 @@ function getWordTranslationResult( word , callback )
 
 function on_mouse_dbclick(event) {
 	currentSelectionWord = $.trim( $.selection('text') ) ;
+	
+	if(!currentSelectionWord) return;
+	
 	$("#translation-box").show();
 	$("#translation-box").css({
 		"left": event.pageX + "px",
@@ -145,9 +157,7 @@ function on_mouse_dbclick(event) {
 	getWordTranslationResult( currentSelectionWord ,function( result ){
 		writeTranslantionResultToHtml( result );
 	});
-	
-	console.log( inNewWordList( currentSelectionWord ) );
-	
+
 	if( inNewWordList( currentSelectionWord ))
 	{
 		$("#btn-cancel-new-word").show();
