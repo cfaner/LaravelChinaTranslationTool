@@ -91,8 +91,6 @@
 		splitContentToWords( $(obj).text() );
 	});
 
-	document.addEventListener("dblclick", on_mouse_dbclick, true);
-
 	function writeTranslantionResultToHtml(result)
 	{
 		$("#translation-net-result").html("");
@@ -158,7 +156,10 @@
 	}
 
 	function on_mouse_dbclick(event) {
+		console.log(event);
 		currentSelectionWord = $.trim( $.selection('text') ) ;
+		
+		console.log(currentSelectionWord);
 		
 		if( isNotEnglishWord( currentSelectionWord )) {
 			currentSelectionWord = '';
@@ -198,11 +199,25 @@
 		
 		let html = $(obj).html();
 		
-		html.replace('\,','，');
-		html.replace('\.','。');
-		html.replace('response','。');
-
-		//$(obj).html("test");
+		//html = html.replace(',','<b>,</>');
+		
+		$(obj).html(html);
 	});
 	
+	$(document).ready(function()
+	{
+		$("body").append('<script> var simplemde2 = new SimpleMDE({\
+			element: $("textarea")[0] ,\
+			spellChecker: false,\
+			forceSync: true,\
+			toolbar: [ ],\
+		});\
+		simplemde2.codemirror.on("dblclick", function(a,b){\
+			console.log(a);\
+			console.log(b);\
+		});</script>');
+		
+		document.addEventListener("dblclick", on_mouse_dbclick, true);
+	});
+ 
 })(jQuery, window , window.document);
