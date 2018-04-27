@@ -206,18 +206,24 @@
 	
 	$(document).ready(function()
 	{
-		$("body").append('<script> var simplemde2 = new SimpleMDE({\
+		$("body").append('<script> var simplemde_left = new SimpleMDE({\
 			element: $("textarea")[0] ,\
 			spellChecker: false,\
 			forceSync: true,\
 			toolbar: [ ],\
-		});\
-		simplemde2.codemirror.on("dblclick", function(a,b){\
-			console.log(a);\
-			console.log(b);\
 		});</script>');
 		
-		document.addEventListener("dblclick", on_mouse_dbclick, true);
+		window.afterDblClick = function ()
+		{
+			let ai =  setInterval(function(){
+				let word = $(".CodeMirror-selectedtext") ;
+				if(word.length > 0)
+				{
+					clearInterval(ai);
+					console.log(word.text());
+				}
+			},10);
+		}
 	});
  
 })(jQuery, window , window.document);

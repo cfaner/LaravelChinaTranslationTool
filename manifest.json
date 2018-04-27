@@ -18,6 +18,7 @@
             "script/lib/jquery.selection.js",
             "script/lib/md5.js",
             "script/editor.js",
+            "script/simplemde.js",
             "script/database.js",
             "script/content.js"
         ],
