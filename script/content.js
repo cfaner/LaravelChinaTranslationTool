@@ -130,15 +130,16 @@
 
 	}
 
-	function showTranslationBox()
+	function showTranslationBox( pageX , pageY )
 	{
 		$("#translation-box").show();
 		$("#translation-box").css({
-			"left": event.pageX + "px",
-			"top":  ( event.pageY + 10 ) + "px",
+			"left": ( pageX + 10 ) + "px",
+			"top":  ( pageY + 10 ) + "px",
 		});
 		
 		$("#translation-net-result").html("获取中,请稍后!");
+		
 		getWordTranslationResult( currentSelectionWord ,function( result ){
 			writeTranslantionResultToHtml( result );
 		});
@@ -155,20 +156,6 @@
 		}
 	}
 
-	function on_mouse_dbclick(event) {
-		console.log(event);
-		currentSelectionWord = $.trim( $.selection('text') ) ;
-		
-		console.log(currentSelectionWord);
-		
-		if( isNotEnglishWord( currentSelectionWord )) {
-			currentSelectionWord = '';
-			return;
-		}
-		
-		showTranslationBox();
-	}
-	
 	chrome.runtime.sendMessage({ action: "get_translation_box_tpl" }, function(response) {
 		$("body").append( response.result );
 	
@@ -204,6 +191,26 @@
 		$(obj).html(html);
 	});
 	
+	window.afterDblClick = function ()
+	{
+		let ai =  setInterval(function(){
+			let word = $(".CodeMirror-selectedtext") ;
+			if(word.length > 0)
+			{
+				clearInterval(ai);
+
+				currentSelectionWord = $.trim( word.text() ) ;
+			 
+				if( isNotEnglishWord( currentSelectionWord )) {
+					currentSelectionWord = '';
+					return;
+				}
+				
+				showTranslationBox( word.offset().left , word.offset().top );
+			}
+		},10);
+	}
+	
 	$(document).ready(function()
 	{
 		$("body").append('<script> var simplemde_left = new SimpleMDE({\
@@ -213,17 +220,7 @@
 			toolbar: [ ],\
 		});</script>');
 		
-		window.afterDblClick = function ()
-		{
-			let ai =  setInterval(function(){
-				let word = $(".CodeMirror-selectedtext") ;
-				if(word.length > 0)
-				{
-					clearInterval(ai);
-					console.log(word.text());
-				}
-			},10);
-		}
+		
 	});
  
 })(jQuery, window , window.document);
