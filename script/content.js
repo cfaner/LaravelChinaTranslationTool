@@ -1,6 +1,10 @@
 
 (function($, win , doc) {
 	
+	let URLData = win.location.pathname.split("/");
+	//只在翻译页面运行
+	if(URLData[1] == undefined || URLData[1] != 'sections') return;
+	
 	let currentSelectionWord = '';
 
 	let words = {
@@ -218,9 +222,11 @@
 			spellChecker: false,\
 			forceSync: true,\
 			toolbar: [ ],\
-		});</script>');
-		
-		
+		});\
+		simplemde_left.codemirror.on("dblclick", function(a){\
+			console.log( 99999999999999 );\
+		});\
+		</script>');
 	});
  
 })(jQuery, window , window.document);

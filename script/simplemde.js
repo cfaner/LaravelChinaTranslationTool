@@ -4516,17 +4516,24 @@ CodeMirror.overlayMode = function(base, overlay, combine) {
   // Set a new selection.
   function setSelection(doc, sel, options) {
     setSelectionNoUndo(doc, sel, options);
-    addSelectionToHistory(doc, doc.sel, doc.cm ? doc.cm.curOp.id : NaN, options);
+    console.log(5);
+	return;
+	addSelectionToHistory(doc, doc.sel, doc.cm ? doc.cm.curOp.id : NaN, options);
   }
 
   function setSelectionNoUndo(doc, sel, options) {
     if (hasHandler(doc, "beforeSelectionChange") || doc.cm && hasHandler(doc.cm, "beforeSelectionChange"))
       sel = filterSelectionChange(doc, sel, options);
-
+	
+	console.log(6);
+	
     var bias = options && options.bias ||
       (cmp(sel.primary().head, doc.sel.primary().head) < 0 ? -1 : 1);
     setSelectionInner(doc, skipAtomicInSelection(doc, sel, bias, true));
-
+	
+	console.log(7);
+	return;
+	
     if (!(options && options.scroll === false) && doc.cm)
       ensureCursorVisible(doc.cm);
   }
@@ -5727,7 +5734,9 @@ CodeMirror.overlayMode = function(base, overlay, combine) {
   // Attach the necessary event handlers when initializing the editor
   function registerEventHandlers(cm) {
     var d = cm.display;
-    on(d.scroller, "mousedown", operation(cm, onMouseDown));
+	console.log(1);
+	on(d.scroller, "mousedown", operation(cm, onMouseDown));
+    
     // Older IE's will not fire a second mousedown for a double click
     if (ie && ie_version < 11)
       on(d.scroller, "dblclick", operation(cm, function(e) {
@@ -5740,7 +5749,9 @@ CodeMirror.overlayMode = function(base, overlay, combine) {
       }));
     else
       on(d.scroller, "dblclick", function(e) { signalDOMEvent(cm, e) || e_preventDefault(e); });
-    // Some browsers fire contextmenu *after* opening the menu, at
+   
+	
+	// Some browsers fire contextmenu *after* opening the menu, at
     // which point we can't mess with it anymore. Context menu is
     // handled in onMouseDown for these browsers.
     if (!captureRightClick) on(d.scroller, "contextmenu", function(e) {onContextMenu(cm, e);});
@@ -5992,7 +6003,9 @@ CodeMirror.overlayMode = function(base, overlay, combine) {
   function leftButtonSelect(cm, e, start, type, addNew) {
     var display = cm.display, doc = cm.doc;
     e_preventDefault(e);
-
+	
+	console.log(2);
+	
     var ourRange, ourIndex, startSel = doc.sel, ranges = startSel.ranges;
     if (addNew && !e.shiftKey) {
       ourIndex = doc.sel.contains(start);
@@ -6028,6 +6041,7 @@ CodeMirror.overlayMode = function(base, overlay, combine) {
 
     if (!addNew) {
       ourIndex = 0;
+	  console.log(3);
       setSelection(doc, new Selection([ourRange], 0), sel_mouse);
       startSel = doc.sel;
     } else if (ourIndex == -1) {
